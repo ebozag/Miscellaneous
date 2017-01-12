@@ -14,3 +14,10 @@ sed -i 's/ /,/g' <input_file>
 ```
 awk '{print NF-2}' <input_file> | sort | uniq -c
 ```
+#### [BASH] Subtract a field from two consecutive lines (Get interarrival times).
+Variable *filename* must be filled with the name of the file with the trace.
+```
+filename=$1
+p=(awk -F',' '{print $3}' $filename)
+awk -v p="$p" -F',' '{printf("%s,%s,%.0f\n",$1,$2,($3-p)*1000)}{p=$3}' $filename
+```
